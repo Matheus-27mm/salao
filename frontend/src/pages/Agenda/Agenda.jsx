@@ -149,12 +149,13 @@ export default function Agenda() {
                         }}>
                         {ags.map(a => {
                           const s = statusLabel(a.status)
+                          const isConcluido = a.status === 'concluido'
                           return (
                             <div key={a.id}
-                              style={{ background: a.status === 'cancelado' ? '#f3f4f6' : a.status === 'concluido' ? '#d1fae5' : 'var(--rose-bg)', border: `1px solid ${a.status === 'cancelado' ? '#d1d5db' : a.status === 'concluido' ? '#a7f3d0' : '#fecdd3'}`, borderRadius: 6, padding: '4px 7px', marginBottom: 3, cursor: 'pointer', fontSize: 12 }}
+                              style={{ background: a.status === 'cancelado' ? '#f3f4f6' : a.status === 'concluido' ? '#4b5320' : 'var(--rose-bg)', border: `1px solid ${a.status === 'cancelado' ? '#d1d5db' : a.status === 'concluido' ? '#6b7a2d' : '#fecdd3'}`, borderRadius: 6, padding: '4px 7px', marginBottom: 3, cursor: 'pointer', fontSize: 12 }}
                               onClick={e => { e.stopPropagation(); setDetalhe(a) }}>
-                              <div style={{ fontWeight: 600, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.cliente.nome}</div>
-                              <div style={{ color: 'var(--text-muted)', fontSize: 11 }}>{a.servico.nome}</div>
+                              <div style={{ fontWeight: 700, color: isConcluido ? '#f8fafc' : 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.cliente.nome}</div>
+                              <div style={{ color: isConcluido ? '#e2e8f0' : 'var(--text-muted)', fontSize: 11 }}>{a.servico.nome}</div>
                             </div>
                           )
                         })}

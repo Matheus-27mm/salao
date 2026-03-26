@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.jsx'
+import { SHOW_ESTOQUE, SHOW_RELATORIOS } from '../utils/features.js'
 import './Layout.css'
 
 const nav = [
@@ -9,8 +10,8 @@ const nav = [
   { to: '/profissionais', icon: '✦', label: 'Profissionais' },
   { to: '/servicos',      icon: '◇', label: 'Serviços' },
   { to: '/caixa',         icon: '◈', label: 'Caixa' },
-  { to: '/estoque',       icon: '▣', label: 'Estoque' },
-  { to: '/relatorios',    icon: '◫', label: 'Relatórios' },
+  ...(SHOW_ESTOQUE ? [{ to: '/estoque', icon: '▣', label: 'Estoque' }] : []),
+  ...(SHOW_RELATORIOS ? [{ to: '/relatorios', icon: '◫', label: 'Relatórios' }] : []),
 ]
 
 export default function Layout() {

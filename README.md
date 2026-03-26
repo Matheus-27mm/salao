@@ -8,7 +8,7 @@
 
 ## 🖥️ Tecnologias
 
-- **Frontend:** React + Vite (porta 5173)
+- **Frontend:** React + Vite (porta 5199)
 - **Backend:** Node.js + Express + Prisma (porta 3001)
 - **Banco:** PostgreSQL (Supabase recomendado)
 
@@ -34,9 +34,9 @@
     ```bash
     iniciar.bat
     ```
-    Dois terminais abrirão: backend (porta 3001) e frontend (porta 5173).
+    Dois terminais abrirão: backend (porta 3001) e frontend (porta 5199).
 5. **Acesse no navegador:**
-    - [http://localhost:5173](http://localhost:5173)
+    - [http://localhost:5199](http://localhost:5199)
     - No primeiro acesso, vá em `/setup` para criar a conta admin.
     - Depois, faça login em `/login`.
 
@@ -121,6 +121,30 @@ salao/
 - Para Linux/Mac, use os comandos manualmente.
 - O backend espera um banco PostgreSQL acessível via `DATABASE_URL`.
 - O frontend comunica com o backend em `http://localhost:3001/api`.
+
+---
+
+## 🎯 Modo MVP (demonstração)
+
+- O frontend já vem com `VITE_MVP_MODE=true` em `frontend/.env`.
+- Nesse modo, o menu oculta os módulos **Estoque** e **Relatórios**, mantendo o restante do sistema igual.
+- Para desativar depois, altere para `VITE_MVP_MODE=false` e reinicie o frontend.
+
+### Popular dados de demo
+
+No backend, execute:
+
+```bash
+cd backend
+npm run seed:mvp
+```
+
+Esse script cria (sem duplicar):
+- 3 serviços
+- 2 profissionais
+- 5 clientes
+- 3 agendamentos no dia
+- lançamentos iniciais no caixa
 
 ---
 

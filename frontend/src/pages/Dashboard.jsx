@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../utils/api'
 import { formatCurrency, formatTime, statusLabel } from '../utils/format'
+import { SHOW_ESTOQUE } from '../utils/features'
 
 export default function Dashboard() {
   const [data, setData] = useState(null)
@@ -32,12 +33,14 @@ export default function Dashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid-4" style={{ marginBottom: 32 }}>
+      <div className="grid-4 dashboard-stats">
         {[
           { label: 'Agendamentos hoje', value: data?.agendamentosHoje ?? 0, sub: 'no dia atual', gold: false, cls: 'fade-in-1' },
           { label: 'Faturamento hoje', value: formatCurrency(data?.faturamentoHoje), sub: 'receitas do dia', gold: true, cls: 'fade-in-2' },
           { label: 'Total de clientes', value: data?.totalClientes ?? 0, sub: 'cadastradas', gold: false, cls: 'fade-in-3' },
-          { label: 'Alertas de estoque', value: data?.alertasEstoque ?? 0, sub: 'produtos em falta', gold: false, warn: (data?.alertasEstoque ?? 0) > 0, cls: 'fade-in-4' },
+          ...(SHOW_ESTOQUE
+            ? [{ label: 'Alertas de estoque', value: data?.alertasEstoque ?? 0, sub: 'produtos em falta', gold: false, warn: (data?.alertasEstoque ?? 0) > 0, cls: 'fade-in-4' }]
+            : []),
         ].map((s, i) => (
           <div key={i} className={`stat-card ${s.cls}`} style={s.warn ? { borderColor: 'rgba(201,148,76,0.3)' } : {}}>
             <div className="stat-label">{s.label}</div>
@@ -50,18 +53,18 @@ export default function Dashboard() {
       </div>
 
       {/* Próximos agendamentos */}
-      <div className="card fade-in-2" style={{ marginBottom: 24 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <h2 style={{ fontSize: 22 }}>Próximos Agendamentos</h2>
-          <Link to="/agenda" style={{ fontSize: 11, color: 'var(--gold)', textDecoration: 'none', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+      <div className="card fade-in-2 dashboard-upcoming">
+        <div className="dashboard-upcoming-head">
+          <h2 className="dashboard-upcoming-title">Próximos Agendamentos</h2>
+          <Link to="/agenda" className="dashboard-link">
             Ver todos →
           </Link>
         </div>
 
         {!data?.proximosAgendamentos?.length ? (
           <div className="empty-state">
-            <div className="empty-icon">◷</div>
-            <p>Nenhum agendamento para hoje</p>
+            <div className="empty-icon">◌</div>
+            <p>Nenhum agendamento hoje. Que tal criar um novo?</p>
           </div>
         ) : (
           <div className="table-wrap">
@@ -81,13 +84,13 @@ export default function Dashboard() {
                   return (
                     <tr key={a.id}>
                       <td>
-                        <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 18, fontWeight: 400, color: 'var(--gold)' }}>
+                        <span className="dashboard-time">
                           {formatTime(a.dataHora)}
                         </span>
                       </td>
-                      <td style={{ fontWeight: 500 }}>{a.cliente.nome}</td>
-                      <td style={{ color: 'var(--text-muted)' }}>{a.servico.nome}</td>
-                      <td style={{ color: 'var(--text-muted)' }}>{a.profissional.nome}</td>
+                      <td className="dashboard-client">{a.cliente.nome}</td>
+                      <td className="dashboard-muted">{a.servico.nome}</td>
+                      <td className="dashboard-muted">{a.profissional.nome}</td>
                       <td><span className={`badge ${s.cls}`}>{s.label}</span></td>
                     </tr>
                   )
@@ -102,18 +105,18 @@ export default function Dashboard() {
       <div className="grid-2 fade-in-3">
         {[
           { to: '/caixa',   icon: '◈', title: 'Caixa do Dia', sub: 'Registrar entradas e saídas' },
-          { to: '/estoque', icon: '▣', title: 'Estoque',       sub: data?.alertasEstoque > 0 ? `⚠ ${data.alertasEstoque} produto(s) em falta` : 'Produtos e movimentações' },
+          ...(SHOW_ESTOQUE
+            ? [{ to: '/estoque', icon: '▣', title: 'Estoque', sub: data?.alertasEstoque > 0 ? `⚠ ${data.alertasEstoque} produto(s) em falta` : 'Produtos e movimentações' }]
+            : []),
         ].map(a => (
-          <Link key={a.to} to={a.to} style={{ textDecoration: 'none' }}>
-            <div className="card-gold" style={{ cursor: 'pointer', transition: 'all 0.2s', display: 'flex', gap: 16, alignItems: 'center' }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 40px rgba(201,168,76,0.18)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = ''; e.currentTarget.style.transform = '' }}>
-              <span style={{ fontSize: 28, color: 'var(--gold)', opacity: 0.7 }}>{a.icon}</span>
+          <Link key={a.to} to={a.to} className="dashboard-quick-link">
+            <div className="card-gold dashboard-quick-card">
+              <span className="dashboard-quick-icon">{a.icon}</span>
               <div>
-                <div style={{ fontWeight: 500, fontSize: 15, marginBottom: 3, color: 'var(--text)' }}>{a.title}</div>
-                <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>{a.sub}</div>
+                <div className="dashboard-quick-title">{a.title}</div>
+                <div className="dashboard-quick-sub">{a.sub}</div>
               </div>
-              <span style={{ marginLeft: 'auto', color: 'var(--gold-dim)', fontSize: 18 }}>→</span>
+              <span className="dashboard-quick-arrow">→</span>
             </div>
           </Link>
         ))}
