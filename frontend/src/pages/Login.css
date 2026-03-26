@@ -1,0 +1,106 @@
+.login-page {
+  min-height: 100vh;
+  background: #060606;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(201,168,76,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 50%, rgba(201,168,76,0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.login-card {
+  background: #0e0e0e;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px;
+  padding: 48px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 60px rgba(201,168,76,0.06);
+  position: relative;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.login-mark {
+  font-size: 28px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 10px rgba(201,168,76,0.5));
+  line-height: 1;
+}
+
+.login-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1;
+}
+
+.login-tagline {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-top: 3px;
+}
+
+.login-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+  margin-bottom: 32px;
+}
+
+.login-error {
+  background: rgba(201,76,76,0.08);
+  border: 1px solid rgba(201,76,76,0.25);
+  color: #e07070;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 18px; }
+
+.login-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+  padding: 14px;
+}
+
+.login-setup-link {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.login-setup-link a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.login-setup-link a:hover { color: var(--gold-light); }
