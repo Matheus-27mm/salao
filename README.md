@@ -1,159 +1,189 @@
-<div align="center">
-  <h1>💅 Sistema de Salão de Beleza</h1>
-  <p>Sistema completo de gestão para salão de beleza: agendamento, caixa, estoque, clientes, profissionais e relatórios.</p>
-  <a href="https://github.com/Matheus-27mm/salao">Repositório no GitHub</a>
-</div>
+# Sistema de Gestão para Salão
 
----
+Aplicação full stack para gestão de salão de beleza com foco em operação diária:
+agenda, clientes, profissionais, serviços, caixa, estoque e relatórios.
 
-## 🖥️ Tecnologias
+## Visão Geral
 
-- **Frontend:** React + Vite (porta 5199)
-- **Backend:** Node.js + Express + Prisma (porta 3001)
-- **Banco:** PostgreSQL (Supabase recomendado)
+- Frontend: React + Vite
+- Backend: Node.js + Express
+- ORM: Prisma
+- Banco de dados: PostgreSQL
+- Autenticação: JWT
 
----
+## Funcionalidades
 
-## 🚦 Instalação rápida (Windows)
+- Agenda semanal com criação, edição e atualização de status
+- Cadastro de clientes, profissionais e serviços
+- Controle de caixa (entradas e saídas)
+- Controle de estoque e movimentações
+- Relatórios operacionais e dashboard
+- Setup inicial para criação do primeiro usuário administrador
 
-1. **Clone o repositório:**
-    ```bash
-    git clone https://github.com/Matheus-27mm/salao.git
-    cd salao
-    ```
-2. **Execute o script de instalação:**
-    ```bash
-    instalar.bat
-    ```
-    Isso instala dependências do backend e frontend, e gera o cliente Prisma.
-3. **Configure o banco de dados:**
-    - Crie um banco PostgreSQL (Supabase recomendado)
-    - Copie `backend/.env.example` para `backend/.env` e preencha a variável `DATABASE_URL` com sua string de conexão.
-    - Defina um valor seguro para `JWT_SECRET`.
-4. **Inicie o sistema:**
-    ```bash
-    iniciar.bat
-    ```
-    Dois terminais abrirão: backend (porta 3001) e frontend (porta 5199).
-5. **Acesse no navegador:**
-    - [http://localhost:5199](http://localhost:5199)
-    - No primeiro acesso, vá em `/setup` para criar a conta admin.
-    - Depois, faça login em `/login`.
+## Arquitetura do Projeto
 
----
+```text
+salao/
+├── backend/
+│   ├── middleware/
+│   ├── prisma/
+│   ├── routes/
+│   ├── scripts/
+│   ├── server.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   ├── index.html
+│   ├── vite.config.js
+│   └── package.json
+├── iniciar.bat
+├── instalar.bat
+└── README.md
+```
 
-## 🐧 Instalação manual (multiplataforma)
+## Pré-requisitos
 
-### 1. Banco de dados
+- Node.js 18+
+- npm 9+
+- PostgreSQL 13+
 
-- Crie um banco PostgreSQL (local ou Supabase)
-- Copie a string de conexão para o arquivo `.env` do backend
+## Instalação
 
-### 2. Backend
+### 1) Instalar dependências
+
+No Windows, execute na raiz do projeto:
+
+```bash
+instalar.bat
+```
+
+Ou manualmente:
 
 ```bash
 cd backend
-cp .env.example .env # ou copy no Windows
-# Edite .env conforme instruções
 npm install
 npx prisma generate
-npx prisma db push
-npm run dev
+
+cd ../frontend
+npm install
 ```
 
-### 3. Frontend
+### 2) Configurar variáveis de ambiente
+
+Crie o arquivo `backend/.env` com base em `backend/.env.example`:
+
+```env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/salao?schema=public"
+JWT_SECRET="defina_uma_chave_forte"
+PORT=3001
+```
+
+### 3) Sincronizar schema no banco
 
 ```bash
-cd frontend
-npm install
+cd backend
+npx prisma db push
+```
+
+## Execução
+
+### Opção rápida (Windows)
+
+```bash
+iniciar.bat
+```
+
+### Opção manual
+
+```bash
+cd backend
+npm run dev
+
+cd ../frontend
 npm run dev
 ```
 
----
+## Endereços locais
 
+- Frontend: http://localhost:5199
+- Backend: http://localhost:3001
+- Health check: http://localhost:3001/api/health
 
-## 🗂️ Estrutura de Pastas
+## Primeiro acesso
 
+1. Acesse `http://localhost:5199/setup`
+2. Crie a conta admin
+3. Faça login em `http://localhost:5199/login`
 
-```
-salao/
-├── backend/
-│   ├── routes/         # Rotas: agendamentos, caixa, clientes, estoque, profissionais, serviços, relatórios
-│   ├── middleware/     # Autenticação JWT
-│   ├── prisma/         # schema.prisma (modelos do banco)
-│   └── server.js       # Servidor Express
-├── frontend/
-│   ├── src/
-│   │   ├── pages/      # Dashboard, Agenda, Clientes, Profissionais, Serviços, Caixa, Estoque, Relatórios
-│   │   ├── components/ # Layout (sidebar)
-│   │   ├── hooks/      # useAuth, useToast
-│   │   └── utils/      # api.js, format.js
-├── instalar.bat        # Instala dependências e prepara ambiente
-├── iniciar.bat         # Inicia backend e frontend automaticamente
-└── sincronizar_banco.bat # (opcional) Sincroniza banco manualmente
-```
+## Modo MVP (Demonstração)
 
+O projeto inclui modo MVP para demo comercial:
 
-## 🛠️ Funcionalidades
+- Arquivo: `frontend/.env`
+- Flag: `VITE_MVP_MODE=true`
+- Efeito: oculta módulos não essenciais na navegação (sem remover funcionalidades do backend)
 
-| Módulo         | Funcionalidades principais                                                      |
-| -------------- | ------------------------------------------------------------------------------ |
-| **Agenda**     | Calendário semanal, criar/editar/cancelar agendamentos, atualizar status      |
-| **Clientes**   | Cadastro, busca, histórico de atendimentos                                    |
-| **Profissionais** | Cadastro, comissão, serviços vinculados                                 |
-| **Serviços**   | Catálogo com preço e duração                                                  |
-| **Caixa**      | Lançamentos do dia, entradas/saídas, formas de pagamento                      |
-| **Estoque**    | Produtos, movimentações, alertas de estoque mínimo                            |
-| **Relatórios** | Faturamento por período, profissional e serviço                               |
-
-
-## 🔐 Segurança
-
-- Autenticação JWT (expiração de 8h)
-- Todas as rotas protegidas por middleware
-- Senhas criptografadas com bcrypt (salt 10)
-
----
-
-## 📝 Observações
-
-- Scripts `.bat` facilitam a instalação e execução no Windows.
-- Para Linux/Mac, use os comandos manualmente.
-- O backend espera um banco PostgreSQL acessível via `DATABASE_URL`.
-- O frontend comunica com o backend em `http://localhost:3001/api`.
-
----
-
-## 🎯 Modo MVP (demonstração)
-
-- O frontend já vem com `VITE_MVP_MODE=true` em `frontend/.env`.
-- Nesse modo, o menu oculta os módulos **Estoque** e **Relatórios**, mantendo o restante do sistema igual.
-- Para desativar depois, altere para `VITE_MVP_MODE=false` e reinicie o frontend.
-
-### Popular dados de demo
-
-No backend, execute:
+Para popular dados de demonstração:
 
 ```bash
 cd backend
 npm run seed:mvp
 ```
 
-Esse script cria (sem duplicar):
-- 3 serviços
-- 2 profissionais
-- 5 clientes
-- 3 agendamentos no dia
-- lançamentos iniciais no caixa
+## Scripts úteis
 
----
+### Backend
 
-## 🤝 Contribuição
+- `npm run dev` — inicia API em modo desenvolvimento
+- `npm run start` — inicia API em modo produção
+- `npm run db:generate` — gera cliente Prisma
+- `npm run db:push` — aplica schema no banco
+- `npm run db:studio` — abre Prisma Studio
+- `npm run seed:mvp` — popula dados de demonstração
 
-Pull requests são bem-vindos! Abra uma issue para sugestões ou problemas.
+### Frontend
 
----
+- `npm run dev` — inicia app em modo desenvolvimento
+- `npm run build` — gera build de produção
+- `npm run preview` — preview da build
 
-## 📄 Licença
+## Boas práticas adotadas
 
-MIT
+- Separação clara entre frontend e backend
+- Rotas protegidas com middleware de autenticação
+- Uso de variáveis de ambiente para segredos e conexão
+- Organização de domínio por módulos (clientes, agenda, caixa etc.)
+- Scripts de suporte para setup e seed de demo
+
+## Segurança
+
+- Nunca versionar arquivos `.env`
+- Definir `JWT_SECRET` forte em produção
+- Restringir acesso ao banco de dados por rede/IP
+- Utilizar HTTPS e CORS configurado por ambiente
+
+## Troubleshooting
+
+### Porta em uso
+
+Se a API ou frontend não subirem por porta ocupada, finalize processos antigos e inicie novamente.
+
+### Erro de conexão com banco
+
+- Validar `DATABASE_URL`
+- Confirmar se o PostgreSQL está ativo
+- Executar `npx prisma db push`
+
+### Setup já realizado
+
+A rota de setup cria apenas o primeiro admin. Após isso, utilize login normalmente.
+
+## Contribuição
+
+1. Crie uma branch de feature
+2. Faça commits pequenos e descritivos
+3. Abra Pull Request com contexto da mudança
+
+## Licença
+
+Defina a licença do projeto conforme sua estratégia (ex.: MIT, proprietária, uso interno).
